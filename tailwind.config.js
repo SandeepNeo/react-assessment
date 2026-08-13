@@ -8,16 +8,17 @@ export default {
     extend: {
       colors: {
         brand: {
-          dark: '#121212',
-          surface: '#16161c',
-          card: '#1a1a20',
-          cardHover: '#262730',
-          input: '#18181c',
-          muted: '#BCBCBC',
+          dark: '#FFFFFF',
+          surface: '#f8fafc',
+          card: '#ffffff',
+          cardHover: '#f1f5f9',
+          input: '#ffffff',
+          muted: '#64748b',
           primary: '#274B9B',
-          primaryHover: '#345ec0',
-          border: '#2e2e36',
-          white: '#FFFFFF',
+          primaryHover: '#1e3a78',
+          border: '#e2e8f0',
+          white: '#ffffff',
+          text: '#121212',
         },
       },
       fontFamily: {

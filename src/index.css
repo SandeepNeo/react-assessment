@@ -4,50 +4,65 @@
 @import "tailwindcss";
 
 @theme {
-  --color-brand-dark: #121212;
-  --color-brand-surface: #16161c;
-  --color-brand-card: #1a1a20;
-  --color-brand-cardHover: #262730;
-  --color-brand-input: #18181c;
-  --color-brand-muted: #BCBCBC;
+  --color-brand-dark: #FFFFFF;
+  --color-brand-surface: #f8fafc;
+  --color-brand-card: #ffffff;
+  --color-brand-cardHover: #f1f5f9;
+  --color-brand-input: #ffffff;
+  --color-brand-muted: #64748b;
   --color-brand-primary: #274B9B;
-  --color-brand-primaryHover: #345ec0;
-  --color-brand-border: #2e2e36;
-  --color-brand-white: #FFFFFF;
+  --color-brand-primaryHover: #1e3a78;
+  --color-brand-border: #e2e8f0;
+  --color-brand-white: #ffffff;
+  --color-brand-text: #121212;
   --font-sans: 'Inter', system-ui, sans-serif;
 }
 
 @layer base {
   body {
     background-color: var(--color-brand-dark);
-    color: var(--color-brand-white);
+    color: var(--color-brand-text);
     font-family: var(--font-sans);
     min-height: 100vh;
     -webkit-font-smoothing: antialiased;
   }
 }
 
-/* Custom AG Grid Dark Theme Overrides */
-.ag-theme-alpine-dark-custom {
-  --ag-background-color: #1a1a20;
-  --ag-header-background-color: #141418;
-  --ag-odd-row-background-color: #1d1d24;
-  --ag-row-hover-color: rgba(39, 75, 155, 0.15);
-  --ag-selected-row-background-color: rgba(39, 75, 155, 0.3);
-  --ag-border-color: #2e2e38;
-  --ag-header-foreground-color: #BCBCBC;
-  --ag-foreground-color: #FFFFFF;
-  --ag-cell-horizontal-border: 1px solid #282832;
+/* Custom AG Grid Light Theme Overrides */
+.ag-theme-alpine-custom {
+  --ag-background-color: #ffffff;
+  --ag-header-background-color: #f8fafc;
+  --ag-odd-row-background-color: #ffffff;
+  --ag-row-hover-color: #f1f5f9;
+  --ag-selected-row-background-color: rgba(39, 75, 155, 0.08);
+  --ag-border-color: #e2e8f0;
+  --ag-header-foreground-color: #475569;
+  --ag-foreground-color: #0f172a;
+  --ag-cell-horizontal-border: 1px solid #f1f5f9;
   --ag-font-size: 14px;
-  border-radius: 0.75rem;
-  overflow: hidden;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+  font-family: var(--font-sans);
 }
 
-.ag-theme-alpine-dark-custom .ag-header-cell-label {
-  font-weight: 600;
-  color: #BCBCBC;
+.ag-theme-alpine-custom .ag-header {
+  border-bottom: 1.5px solid #e2e8f0;
+}
+
+.ag-theme-alpine-custom .ag-header-cell-label {
+  font-weight: 700;
+  color: #475569;
   text-transform: uppercase;
-  font-size: 12px;
-  letter-spacing: 0.5px;
+  font-size: 11px;
+  letter-spacing: 0.6px;
+}
+
+.ag-theme-alpine-custom .ag-row {
+  border-bottom: 1px solid #f1f5f9;
+  transition: background-color 0.15s ease;
+}
+
+.ag-theme-alpine-custom .ag-cell {
+  display: flex;
+  align-items: center;
+  padding-left: 16px;
+  padding-right: 16px;
 }
