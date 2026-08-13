@@ -9,8 +9,11 @@ export default function Header() {
 
   const getPageTitle = () => {
     if (location.pathname.startsWith('/ecommerce/cart')) return 'Cart Management';
+    if (location.pathname.startsWith('/stocks')) return 'Stock Portfolio Manager';
+    if (location.pathname.startsWith('/market')) return 'Real-Time Market Feed';
     return 'E-Commerce Store';
   };
+
 
   return (
     <header className="h-[70px] bg-white border-b border-slate-200 flex items-center justify-between px-6 sticky top-0 z-50 shadow-xs">

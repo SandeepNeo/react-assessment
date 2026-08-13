@@ -1,16 +1,29 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { ShoppingBag, Layers } from 'lucide-react';
+import { ShoppingBag, LineChart, Activity, Layers } from 'lucide-react';
 
 export default function Sidebar() {
   const navItems = [
     {
-      title: 'E-Commerce',
+      title: 'Task 1 — E-Commerce',
       items: [
-        { path: '/ecommerce', label: 'Products Catalog', icon: ShoppingBag, end: true }
+        { path: '/ecommerce', label: 'Products Catalog', icon: ShoppingBag, end: true },
+      ],
+    },
+    {
+      title: 'Task 2 — Stocks',
+      items: [
+        { path: '/stocks', label: 'Stock Manager', icon: LineChart, end: false },
+      ],
+    },
+    {
+      title: 'Task 3 — Market Feed',
+      items: [
+        { path: '/market', label: 'Nifty 50 & Sensex', icon: Activity, end: false },
       ],
     },
   ];
+
 
   return (
     <aside className="w-[250px] bg-slate-50 border-r border-slate-200 flex flex-col h-screen sticky top-0 shrink-0">

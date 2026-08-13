@@ -1,0 +1,92 @@
+{
+  "stocks": [
+    {
+      "symbol": "AAPL",
+      "name": "Apple Inc.",
+      "price": 175.50,
+      "change": 1.25,
+      "low": 173.00,
+      "high": 178.00,
+      "volume": 2500000,
+      "marketCap": "2.8T",
+      "updateDateTime": "2026-08-13T10:30:00Z"
+    },
+    {
+      "symbol": "GOOGL",
+      "name": "Alphabet Inc.",
+      "price": 2800.75,
+      "change": -5.60,
+      "low": 2785.00,
+      "high": 2835.00,
+      "volume": 1800000,
+      "marketCap": "1.9T",
+      "updateDateTime": "2026-08-13T10:30:00Z"
+    },
+    {
+      "symbol": "TSLA",
+      "name": "Tesla Inc.",
+      "price": 850.20,
+      "change": 2.40,
+      "low": 840.00,
+      "high": 860.00,
+      "volume": 3200000,
+      "marketCap": "900B",
+      "updateDateTime": "2026-08-13T10:30:00Z"
+    },
+    {
+      "symbol": "MSFT",
+      "name": "Microsoft Corporation",
+      "price": 415.30,
+      "change": 3.80,
+      "low": 410.50,
+      "high": 418.00,
+      "volume": 4100000,
+      "marketCap": "3.1T",
+      "updateDateTime": "2026-08-13T10:30:00Z"
+    },
+    {
+      "symbol": "AMZN",
+      "name": "Amazon.com Inc.",
+      "price": 182.40,
+      "change": -0.85,
+      "low": 180.20,
+      "high": 185.10,
+      "volume": 5200000,
+      "marketCap": "1.89T",
+      "updateDateTime": "2026-08-13T10:30:00Z"
+    },
+    {
+      "symbol": "NVDA",
+      "name": "NVIDIA Corporation",
+      "price": 124.60,
+      "change": 4.15,
+      "low": 121.00,
+      "high": 126.80,
+      "volume": 8900000,
+      "marketCap": "3.05T",
+      "updateDateTime": "2026-08-13T10:30:00Z"
+    },
+    {
+      "symbol": "RELIANCE",
+      "name": "Reliance Industries Ltd.",
+      "price": 2980.50,
+      "change": 12.30,
+      "low": 2960.00,
+      "high": 3010.00,
+      "volume": 1250000,
+      "marketCap": "20.1L Cr",
+      "updateDateTime": "2026-08-13T10:30:00Z"
+    },
+    {
+      "symbol": "TCS",
+      "name": "Tata Consultancy Services",
+      "price": 4210.00,
+      "change": -18.50,
+      "low": 4190.00,
+      "high": 4245.00,
+      "volume": 750000,
+      "marketCap": "15.2L Cr",
+      "updateDateTime": "2026-08-13T10:30:00Z"
+    }
+  ]
+}
