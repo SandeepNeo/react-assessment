@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import { useSelector } from 'react-redux';
 import { TrendingUp, TrendingDown, Activity, Wifi } from 'lucide-react';
@@ -181,7 +181,7 @@ export default function MarketGrid() {
               minute: '2-digit',
               second: '2-digit',
             });
-          } catch (e) {
+          } catch {
             return params.value;
           }
         },

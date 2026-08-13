@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import { useDispatch } from 'react-redux';
 import { updateStock, deleteStock } from '../store/stockSlice';
@@ -8,7 +8,7 @@ import ConfirmModal from '../../../components/common/ConfirmModal';
 const parseCleanNumber = (val) => {
   if (typeof val === 'number') return val;
   if (typeof val !== 'string' || !val.trim()) return NaN;
-  const cleaned = val.replace(/[\$,\+\s]/g, '');
+  const cleaned = val.replace(/[$+,\s]/g, '');
   return parseFloat(cleaned);
 };
 
@@ -158,7 +158,7 @@ export default function StockGrid({ selectedStocks }) {
               minute: '2-digit',
               second: '2-digit',
             });
-          } catch (e) {
+          } catch {
             return params.value;
           }
         },

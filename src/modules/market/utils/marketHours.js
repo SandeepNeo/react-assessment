@@ -50,7 +50,7 @@ export function checkIsMarketOpen(customDate = null) {
         : `Market Closed (Outside 09:15 - 15:30 IST)`,
       currentTimeIST: `${day} ${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')} IST`,
     };
-  } catch (error) {
+  } catch {
     // Fallback if timezone formatting fails
     return {
       isOpen: true,

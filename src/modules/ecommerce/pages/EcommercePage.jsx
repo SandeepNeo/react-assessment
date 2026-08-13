@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { getCategories, getProducts } from '../services/productService';
 import CategoryFilter from '../components/CategoryFilter';
 import ProductList from '../components/ProductList';
@@ -24,7 +24,6 @@ export default function EcommercePage() {
 
   useEffect(() => {
     let isMounted = true;
-    setLoading(true);
     getProducts(selectedCategory)
       .then((data) => {
         if (isMounted) {
@@ -32,9 +31,8 @@ export default function EcommercePage() {
           setLoading(false);
         }
       })
-      .catch((err) => {
+      .catch(() => {
         if (isMounted) {
-          console.error('Error loading products:', err);
           setLoading(false);
         }
       });

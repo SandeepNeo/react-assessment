@@ -1,4 +1,3 @@
-import React from 'react';
 import { useSelector } from 'react-redux';
 import { ShoppingCart, ShieldCheck } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';

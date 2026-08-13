@@ -1,39 +1,36 @@
-import React, { useMemo } from 'react';
+import { useMemo, useState, useCallback } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import { useDispatch } from 'react-redux';
 import { updateQuantity, removeFromCart } from '../store/cartSlice';
 import { Trash2, Plus, Minus } from 'lucide-react';
+import ConfirmModal from '../../../components/common/ConfirmModal';
 
 export default function CartGrid({ cartItems }) {
   const dispatch = useDispatch();
+  const [itemToDelete, setItemToDelete] = useState(null);
 
-  const handleCellValueChanged = (params) => {
-    if (params.colDef.field === 'quantity') {
-      const newQty = parseInt(params.newValue, 10);
-      if (isNaN(newQty) || newQty < 1) {
-        params.node.setDataValue('quantity', params.oldValue);
-        alert('Quantity must be a positive integer greater than or equal to 1.');
-        return;
+  const handleQuantityIncrement = useCallback(
+    (data) => {
+      dispatch(updateQuantity({ id: data.id, quantity: data.quantity + 1 }));
+    },
+    [dispatch]
+  );
+
+  const handleQuantityDecrement = useCallback(
+    (data) => {
+      if (data.quantity > 1) {
+        dispatch(updateQuantity({ id: data.id, quantity: data.quantity - 1 }));
       }
-      dispatch(updateQuantity({ id: params.data.id, quantity: newQty }));
-    }
-  };
-
-  const handleQuantityIncrement = (data) => {
-    dispatch(updateQuantity({ id: data.id, quantity: data.quantity + 1 }));
-  };
-
-  const handleQuantityDecrement = (data) => {
-    if (data.quantity > 1) {
-      dispatch(updateQuantity({ id: data.id, quantity: data.quantity - 1 }));
-    }
-  };
+    },
+    [dispatch]
+  );
 
   const columnDefs = useMemo(
     () => [
       {
         headerName: 'Product',
         field: 'name',
+        editable: false,
         flex: 2.2,
         minWidth: 240,
         cellRenderer: (params) => (
@@ -53,6 +50,7 @@ export default function CartGrid({ cartItems }) {
       {
         headerName: 'Unit Price',
         field: 'price',
+        editable: false,
         flex: 1,
         minWidth: 110,
         cellClass: 'flex items-center',
@@ -64,35 +62,36 @@ export default function CartGrid({ cartItems }) {
       {
         headerName: 'Quantity',
         field: 'quantity',
-        editable: true,
+        editable: false,
         flex: 1.5,
         minWidth: 150,
-        cellClass: 'editable-cell flex items-center justify-center',
+        cellClass: 'flex items-center justify-center',
         cellRenderer: (params) => (
-          <div className="flex items-center justify-between w-full bg-slate-100/80 border border-slate-200 rounded-lg px-2 py-1">
+          <div className="flex items-center justify-between w-full max-w-[120px] bg-slate-100/80 border border-slate-200 rounded-lg px-2 py-1">
             <button
               onClick={() => handleQuantityDecrement(params.data)}
               disabled={params.value <= 1}
-              className="w-5 h-5 rounded flex items-center justify-center bg-white border border-slate-200 text-slate-600 hover:bg-slate-200 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-colors shadow-2xs"
+              className="w-6 h-6 rounded flex items-center justify-center bg-white border border-slate-200 text-slate-600 hover:bg-slate-200 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-colors shadow-2xs shrink-0"
               title="Decrease quantity"
             >
-              <Minus size={11} />
+              <Minus size={12} />
             </button>
-            <span className="font-bold text-slate-900 text-xs px-2" title="Double click to edit directly">
+            <span className="font-bold text-slate-900 text-sm px-2 select-none">
               {params.value}
             </span>
             <button
               onClick={() => handleQuantityIncrement(params.data)}
-              className="w-5 h-5 rounded flex items-center justify-center bg-white border border-slate-200 text-slate-600 hover:bg-slate-200 cursor-pointer transition-colors shadow-2xs"
+              className="w-6 h-6 rounded flex items-center justify-center bg-white border border-slate-200 text-slate-600 hover:bg-slate-200 cursor-pointer transition-colors shadow-2xs shrink-0"
               title="Increase quantity"
             >
-              <Plus size={11} />
+              <Plus size={12} />
             </button>
           </div>
         ),
       },
       {
         headerName: 'Total Price',
+        editable: false,
         valueGetter: (params) => (params.data.price || 0) * (params.data.quantity || 0),
         flex: 1.2,
         minWidth: 130,
@@ -105,12 +104,13 @@ export default function CartGrid({ cartItems }) {
       },
       {
         headerName: 'Action',
+        editable: false,
         flex: 0.9,
         minWidth: 100,
         cellClass: 'flex items-center justify-center',
         cellRenderer: (params) => (
           <button
-            onClick={() => dispatch(removeFromCart(params.data.id))}
+            onClick={() => setItemToDelete(params.data.id)}
             className="p-1.5 rounded-lg bg-rose-50 text-rose-600 border border-rose-200 hover:bg-rose-600 hover:text-white transition-all flex items-center gap-1.5 text-xs font-semibold cursor-pointer"
             title="Remove item from cart"
           >
@@ -120,7 +120,7 @@ export default function CartGrid({ cartItems }) {
         ),
       },
     ],
-    [dispatch]
+    [handleQuantityDecrement, handleQuantityIncrement]
   );
 
   const defaultColDef = useMemo(
@@ -132,18 +132,37 @@ export default function CartGrid({ cartItems }) {
     []
   );
 
+  const rowData = useMemo(() => cartItems.map((item) => ({ ...item })), [cartItems]);
+
   return (
-    <div className="ag-theme-alpine-custom h-[420px] w-full rounded-xl shadow-xs overflow-hidden border border-slate-200 bg-white">
-      <AgGridReact
-        theme="legacy"
-        rowData={cartItems}
-        columnDefs={columnDefs}
-        defaultColDef={defaultColDef}
-        onCellValueChanged={handleCellValueChanged}
-        rowHeight={60}
-        headerHeight={46}
-        animateRows={true}
+    <>
+      <div className="ag-theme-alpine-custom h-[420px] w-full rounded-xl shadow-xs overflow-hidden border border-slate-200 bg-white">
+        <AgGridReact
+          theme="legacy"
+          rowData={rowData}
+          getRowId={(params) => String(params.data?.id ?? 'cart-row')}
+          columnDefs={columnDefs}
+          defaultColDef={defaultColDef}
+          rowHeight={60}
+          headerHeight={46}
+          animateRows={true}
+        />
+      </div>
+
+      <ConfirmModal
+        isOpen={!!itemToDelete}
+        title="Remove Item"
+        message="Are you sure you want to delete?"
+        confirmText="Delete"
+        cancelText="Cancel"
+        onConfirm={() => {
+          if (itemToDelete) {
+            dispatch(removeFromCart(itemToDelete));
+            setItemToDelete(null);
+          }
+        }}
+        onClose={() => setItemToDelete(null)}
       />
-    </div>
+    </>
   );
 }

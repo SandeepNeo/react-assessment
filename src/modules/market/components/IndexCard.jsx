@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { TrendingUp, TrendingDown, Clock, Activity, Zap } from 'lucide-react';
 
 export default function IndexCard({ data, connectionStatus, symbolCode }) {

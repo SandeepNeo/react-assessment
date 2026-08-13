@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import stockService from '../services/stockService';
-import { setAvailableStocks, addStock } from '../store/stockSlice';
+import { setAvailableStocks } from '../store/stockSlice';
 import StockSearch from '../components/StockSearch';
 import StockToolbar from '../components/StockToolbar';
 import StockGrid from '../components/StockGrid';
@@ -9,7 +9,7 @@ import { LineChart, PlusCircle, Info } from 'lucide-react';
 
 export default function StockPage() {
   const dispatch = useDispatch();
-  const { availableStocks, selectedStocks } = useSelector((state) => state.stocks);
+  const selectedStocks = useSelector((state) => state.stocks.selectedStocks);
 
   useEffect(() => {
     stockService.getAvailableStocks().then((data) => {

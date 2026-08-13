@@ -88,7 +88,7 @@ export function useMarketWebSocket() {
           niftyRetryIdxRef.current += 1;
           niftyTimeoutRef.current = setTimeout(connectNifty, delay);
         };
-      } catch (err) {
+      } catch {
         dispatch(setConnectionStatus({ indexKey: 'nifty', status: 'error' }));
       }
     };
@@ -131,7 +131,7 @@ export function useMarketWebSocket() {
           sensexRetryIdxRef.current += 1;
           sensexTimeoutRef.current = setTimeout(connectSensex, delay);
         };
-      } catch (err) {
+      } catch {
         dispatch(setConnectionStatus({ indexKey: 'sensex', status: 'error' }));
       }
     };

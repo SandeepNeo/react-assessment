@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSearchTerm, addStock } from '../store/stockSlice';
 import { Search, Plus, CheckCircle2, AlertCircle, X } from 'lucide-react';

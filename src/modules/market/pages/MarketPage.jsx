@@ -1,4 +1,3 @@
-import React from 'react';
 import { useMarketWebSocket } from '../hooks/useMarketWebSocket';
 import ConnectionStatus from '../components/ConnectionStatus';
 import MarketGrid from '../components/MarketGrid';

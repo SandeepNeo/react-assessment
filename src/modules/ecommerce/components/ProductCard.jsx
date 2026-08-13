@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ShoppingCart, Star, Check } from 'lucide-react';
 import { addToCart } from '../store/cartSlice';

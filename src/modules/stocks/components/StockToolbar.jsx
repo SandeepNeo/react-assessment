@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { addStock, clearAllStocks } from '../store/stockSlice';
 import { TrendingUp, TrendingDown, Layers, Sparkles, Trash2 } from 'lucide-react';

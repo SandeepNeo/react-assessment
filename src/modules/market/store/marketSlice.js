@@ -64,26 +64,6 @@ const marketSlice = createSlice({
         state.sensex = updated;
       }
     },
-    updateNiftyData: (state, action) => {
-      const updated = {
-        ...state.nifty50,
-        ...action.payload,
-        id: 'NSEIDX_26000',
-        lastUpdated: action.payload.timestamp || new Date().toISOString(),
-      };
-      state.nifty50 = updated;
-      state.indices['NSEIDX_26000'] = updated;
-    },
-    updateSensexData: (state, action) => {
-      const updated = {
-        ...state.sensex,
-        ...action.payload,
-        id: 'BSEIDX_1',
-        lastUpdated: action.payload.timestamp || new Date().toISOString(),
-      };
-      state.sensex = updated;
-      state.indices['BSEIDX_1'] = updated;
-    },
     setConnectionStatus: (state, action) => {
       const { indexKey, status } = action.payload; // indexKey: 'nifty' | 'sensex'
       state.connection[indexKey] = status;
@@ -111,8 +91,6 @@ const marketSlice = createSlice({
 
 export const {
   updateIndexData,
-  updateNiftyData,
-  updateSensexData,
   setConnectionStatus,
   setMarketStatus,
   addTickLog,
