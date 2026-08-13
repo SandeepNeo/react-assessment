@@ -34,10 +34,11 @@ export default function TickLog() {
         </div>
       ) : (
         <div className="max-h-64 overflow-y-auto divide-y divide-slate-100 font-mono text-xs">
-          {tickLogs.map((log) => {
+          {tickLogs.map((log, idx) => {
             const isUp = (log.percentChange || 0) >= 0;
+            const itemKey = log.logId || `${log.id || 'tick'}_${idx}`;
             return (
-              <div key={log.id} className="py-2.5 px-2 hover:bg-slate-50 flex flex-col sm:flex-row sm:items-center justify-between gap-2 transition-colors">
+              <div key={itemKey} className="py-2.5 px-2 hover:bg-slate-50 flex flex-col sm:flex-row sm:items-center justify-between gap-2 transition-colors">
                 <div className="flex items-center gap-3">
                   <span
                     className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-bold ${

@@ -1,17 +1,13 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 import { useMarketWebSocket } from '../hooks/useMarketWebSocket';
-import MarketStatus from '../components/MarketStatus';
 import ConnectionStatus from '../components/ConnectionStatus';
-import IndexCard from '../components/IndexCard';
+import MarketGrid from '../components/MarketGrid';
 import TickLog from '../components/TickLog';
-import { Activity, TrendingUp, BarChart2 } from 'lucide-react';
+import { Activity } from 'lucide-react';
 
 export default function MarketPage() {
   // Activate WebSocket listener custom hook
   useMarketWebSocket();
-
-  const { nifty50, sensex, connection } = useSelector((state) => state.market);
 
   return (
     <div className="p-6 md:p-8 max-w-7xl mx-auto flex flex-col gap-6">
@@ -27,30 +23,16 @@ export default function MarketPage() {
             </h2>
           </div>
           <p className="text-sm text-slate-500 mt-1">
-            Live stream of Nifty 50 and Sensex benchmarks with pipe-delimited feed parser & IST schedule tracking.
+            Live stream of Nifty 50, Sensex and market benchmarks parsed directly from pipe-delimited WebSocket feeds into AG Grid.
           </p>
         </div>
       </div>
 
-      {/* Market IST Status Banner */}
-      <MarketStatus />
-
       {/* Socket Connection & Mock Feed Controls */}
       <ConnectionStatus />
 
-      {/* Benchmark Index Cards Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <IndexCard
-          data={nifty50}
-          connectionStatus={connection.nifty}
-          symbolCode="NSEIDX_26000"
-        />
-        <IndexCard
-          data={sensex}
-          connectionStatus={connection.sensex}
-          symbolCode="BSEIDX_1"
-        />
-      </div>
+      {/* Real-Time Market AG Grid Table */}
+      <MarketGrid />
 
       {/* Real-time Tick Activity Feed */}
       <TickLog />

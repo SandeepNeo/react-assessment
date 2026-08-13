@@ -68,13 +68,6 @@ export default function Sidebar() {
           </div>
         ))}
       </nav>
-
-      <div className="p-4 border-t border-slate-200 bg-white/60">
-        <div className="flex items-center gap-2 text-xs text-slate-500 font-medium">
-          <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-          <span>Redux Store Active</span>
-        </div>
-      </div>
     </aside>
   );
 }

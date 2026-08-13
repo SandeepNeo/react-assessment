@@ -1,65 +1,9 @@
-import React, { useMemo, useState, useRef, useEffect } from 'react';
-import { AgGridReact, useGridCellEditor } from 'ag-grid-react';
+import React, { useMemo, useState } from 'react';
+import { AgGridReact } from 'ag-grid-react';
 import { useDispatch } from 'react-redux';
 import { updateStock, deleteStock } from '../store/stockSlice';
 import { Trash2 } from 'lucide-react';
-
-// AG Grid v36 React Cell Editor using useGridCellEditor hook with dynamic ref tracking
-const StockCellEditor = (props) => {
-  const [value, setValue] = useState(props.value ?? '');
-  const valueRef = useRef(value);
-  valueRef.current = value;
-  const inputRef = useRef(null);
-
-  useGridCellEditor({
-    getValue() {
-      return valueRef.current;
-    },
-    isCancelAfterEnd() {
-      return false;
-    },
-  });
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (inputRef.current) {
-        inputRef.current.focus();
-        inputRef.current.select();
-      }
-    }, 15);
-    return () => clearTimeout(timer);
-  }, []);
-
-  const handleChange = (e) => {
-    const val = e.target.value;
-    setValue(val);
-    valueRef.current = val;
-    if (props.onValueChange) {
-      props.onValueChange(val);
-    }
-  };
-
-  const handleKeyDown = (e) => {
-    if (e.key === 'Enter') {
-      if (props.stopEditing) {
-        props.stopEditing();
-      }
-    }
-  };
-
-  return (
-    <div className="w-full h-full flex items-center p-0.5 bg-white">
-      <input
-        ref={inputRef}
-        type="text"
-        value={value}
-        onChange={handleChange}
-        onKeyDown={handleKeyDown}
-        className="w-full h-full px-2.5 py-1 bg-white text-slate-900 border-2 border-brand-primary rounded-lg outline-none font-bold text-xs shadow-xs"
-      />
-    </div>
-  );
-};
+import ConfirmModal from '../../../components/common/ConfirmModal';
 
 const parseCleanNumber = (val) => {
   if (typeof val === 'number') return val;
@@ -70,6 +14,7 @@ const parseCleanNumber = (val) => {
 
 export default function StockGrid({ selectedStocks }) {
   const dispatch = useDispatch();
+  const [stockToDelete, setStockToDelete] = useState(null);
 
   const handleCellValueChanged = (params) => {
     const { field } = params.colDef;
@@ -77,24 +22,27 @@ export default function StockGrid({ selectedStocks }) {
     const newValue = params.newValue;
     const oldValue = params.oldValue;
 
+    if (newValue === oldValue) return;
+
     if (field === 'price' || field === 'low' || field === 'high' || field === 'volume') {
       const numVal = parseCleanNumber(newValue);
-      if (isNaN(numVal) || ((field === 'price' || field === 'volume') && numVal < 0)) {
+      if (isNaN(numVal) || ((field === 'price' || field === 'volume' || field === 'low' || field === 'high') && numVal < 0)) {
+        alert(`Invalid entry for ${params.colDef.headerName}. Must be a valid non-negative number.`);
         params.node.setDataValue(field, oldValue);
-        alert(`Invalid entry for ${field}. Value must be a valid non-negative number.`);
         return;
       }
       dispatch(updateStock({ symbol, field, value: numVal }));
     } else if (field === 'change') {
       const numVal = parseCleanNumber(newValue);
       if (isNaN(numVal)) {
+        alert('Invalid entry for Change. Must be a valid number.');
         params.node.setDataValue(field, oldValue);
-        alert('Invalid entry for Change. Value must be a valid number.');
         return;
       }
       dispatch(updateStock({ symbol, field, value: numVal }));
     } else {
-      dispatch(updateStock({ symbol, field, value: String(newValue) }));
+      const strVal = String(newValue ?? '').trim();
+      dispatch(updateStock({ symbol, field, value: strVal }));
     }
   };
 
@@ -128,8 +76,7 @@ export default function StockGrid({ selectedStocks }) {
         headerName: 'Price ($)',
         field: 'price',
         editable: true,
-        cellEditor: StockCellEditor,
-        useValueFormatterForEdit: false,
+        cellEditor: 'agTextCellEditor',
         flex: 1.2,
         minWidth: 110,
         cellClass: 'editable-cell font-bold text-slate-900 cursor-pointer hover:bg-blue-50/70',
@@ -139,8 +86,7 @@ export default function StockGrid({ selectedStocks }) {
         headerName: 'Change ($)',
         field: 'change',
         editable: true,
-        cellEditor: StockCellEditor,
-        useValueFormatterForEdit: false,
+        cellEditor: 'agTextCellEditor',
         flex: 1.2,
         minWidth: 110,
         cellClass: 'editable-cell font-bold cursor-pointer hover:bg-blue-50/70',
@@ -160,8 +106,7 @@ export default function StockGrid({ selectedStocks }) {
         headerName: 'Low ($)',
         field: 'low',
         editable: true,
-        cellEditor: StockCellEditor,
-        useValueFormatterForEdit: false,
+        cellEditor: 'agTextCellEditor',
         flex: 1,
         minWidth: 100,
         cellClass: 'editable-cell text-slate-600 font-medium cursor-pointer hover:bg-blue-50/70',
@@ -171,8 +116,7 @@ export default function StockGrid({ selectedStocks }) {
         headerName: 'High ($)',
         field: 'high',
         editable: true,
-        cellEditor: StockCellEditor,
-        useValueFormatterForEdit: false,
+        cellEditor: 'agTextCellEditor',
         flex: 1,
         minWidth: 100,
         cellClass: 'editable-cell text-slate-600 font-medium cursor-pointer hover:bg-blue-50/70',
@@ -182,8 +126,7 @@ export default function StockGrid({ selectedStocks }) {
         headerName: 'Volume',
         field: 'volume',
         editable: true,
-        cellEditor: StockCellEditor,
-        useValueFormatterForEdit: false,
+        cellEditor: 'agTextCellEditor',
         flex: 1.3,
         minWidth: 120,
         cellClass: 'editable-cell text-slate-700 font-medium cursor-pointer hover:bg-blue-50/70',
@@ -194,7 +137,7 @@ export default function StockGrid({ selectedStocks }) {
         headerName: 'Market Cap',
         field: 'marketCap',
         editable: true,
-        cellEditor: StockCellEditor,
+        cellEditor: 'agTextCellEditor',
         flex: 1.2,
         minWidth: 110,
         cellClass: 'editable-cell font-semibold text-slate-700 cursor-pointer hover:bg-blue-50/70',
@@ -203,8 +146,7 @@ export default function StockGrid({ selectedStocks }) {
         headerName: 'Updated At',
         field: 'updateDateTime',
         editable: true,
-        cellEditor: StockCellEditor,
-        useValueFormatterForEdit: false,
+        cellEditor: 'agTextCellEditor',
         flex: 1.5,
         minWidth: 140,
         cellClass: 'editable-cell text-slate-600 text-xs font-medium cursor-pointer hover:bg-blue-50/70',
@@ -229,7 +171,7 @@ export default function StockGrid({ selectedStocks }) {
         cellClass: 'flex items-center justify-center',
         cellRenderer: (params) => (
           <button
-            onClick={() => dispatch(deleteStock(params.data.symbol))}
+            onClick={() => setStockToDelete(params.data.symbol)}
             className="p-1.5 rounded-lg bg-rose-50 text-rose-600 border border-rose-200 hover:bg-rose-600 hover:text-white transition-all flex items-center gap-1 text-xs font-semibold cursor-pointer"
             title="Delete stock entry"
           >
@@ -239,7 +181,7 @@ export default function StockGrid({ selectedStocks }) {
         ),
       },
     ],
-    [dispatch]
+    []
   );
 
   const defaultColDef = useMemo(
@@ -251,20 +193,40 @@ export default function StockGrid({ selectedStocks }) {
     []
   );
 
+  const rowData = useMemo(() => selectedStocks.map((s) => ({ ...s })), [selectedStocks]);
+
   return (
-    <div className="ag-theme-alpine-custom w-full rounded-xl border border-slate-200 bg-white shadow-xs">
-      <AgGridReact
-        rowData={selectedStocks}
-        columnDefs={columnDefs}
-        defaultColDef={defaultColDef}
-        onCellValueChanged={handleCellValueChanged}
-        domLayout="autoHeight"
-        singleClickEdit={true}
-        stopEditingWhenCellsLoseFocus={true}
-        rowHeight={52}
-        headerHeight={46}
-        animateRows={true}
+    <>
+      <div className="ag-theme-alpine-custom w-full rounded-xl border border-slate-200 bg-white shadow-xs">
+        <AgGridReact
+          theme="legacy"
+          rowData={rowData}
+          getRowId={(params) => params.data?.symbol || params.data?.id || 'stock-row'}
+          columnDefs={columnDefs}
+          defaultColDef={defaultColDef}
+          onCellValueChanged={handleCellValueChanged}
+          domLayout="autoHeight"
+          singleClickEdit={true}
+          stopEditingWhenCellsLoseFocus={true}
+          rowHeight={52}
+          headerHeight={46}
+          animateRows={true}
+        />
+      </div>
+
+      <ConfirmModal
+        isOpen={!!stockToDelete}
+        title="Delete Stock"
+        message="Are you sure you want to delete?"
+        confirmText="Delete"
+        cancelText="Cancel"
+        onConfirm={() => {
+          if (stockToDelete) {
+            dispatch(deleteStock(stockToDelete));
+          }
+        }}
+        onClose={() => setStockToDelete(null)}
       />
-    </div>
+    </>
   );
 }

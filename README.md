@@ -112,11 +112,6 @@ http://localhost:5173
 
 ```text
 react-assessment/
-├── docs/                        # Project specifications & task documentation
-│   ├── SRS.md                   # Software Requirements Specification
-│   ├── TASK_1_ECOMMERCE.md      # E-Commerce module specification
-│   ├── TASK_2_STOCKS.md         # Stock Manager module specification
-│   └── TASK_3_MARKET_WEBSOCKET.md # Market Feed module specification
 ├── src/
 │   ├── app/                     # Main App container, Layout shell & Router configuration
 │   ├── components/              # Shared UI components (Navigation, Header, Buttons)

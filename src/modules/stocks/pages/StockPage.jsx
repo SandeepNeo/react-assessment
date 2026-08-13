@@ -14,10 +14,6 @@ export default function StockPage() {
   useEffect(() => {
     stockService.getAvailableStocks().then((data) => {
       dispatch(setAvailableStocks(data));
-      // Pre-select first 3 stocks if none selected yet for immediate demo presentation
-      if (selectedStocks.length === 0 && data.length > 0) {
-        data.slice(0, 3).forEach((s) => dispatch(addStock(s)));
-      }
     });
   }, [dispatch]);
 

@@ -47,6 +47,9 @@ const stockSlice = createSlice({
         (s) => s.symbol.toUpperCase() !== symbol.toUpperCase()
       );
     },
+    clearAllStocks: (state) => {
+      state.selectedStocks = [];
+    },
   },
 });
 
@@ -56,6 +59,7 @@ export const {
   addStock,
   updateStock,
   deleteStock,
+  clearAllStocks,
 } = stockSlice.actions;
 
 export default stockSlice.reducer;

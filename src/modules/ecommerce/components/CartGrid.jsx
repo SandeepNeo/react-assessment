@@ -135,6 +135,7 @@ export default function CartGrid({ cartItems }) {
   return (
     <div className="ag-theme-alpine-custom h-[420px] w-full rounded-xl shadow-xs overflow-hidden border border-slate-200 bg-white">
       <AgGridReact
+        theme="legacy"
         rowData={cartItems}
         columnDefs={columnDefs}
         defaultColDef={defaultColDef}
